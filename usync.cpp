@@ -109,6 +109,7 @@ int main (int argc, char *argv[]) {
   }
 
   fs::path disk = argv[1];
+  std::filesystem::current_path(disk);
   std::string conf_path = (disk/fs::path(".usync")).string();
 
   std::ofstream conf_file(conf_path, std::ios::app);
@@ -201,7 +202,7 @@ int main (int argc, char *argv[]) {
         if (data[i].machine == unique_machine_id) {
           for (int j = 0; j < data[i].paths.size(); j++) {
             auto r = split(data[i].paths[j], ':');
-            std::string command = "mkdir -p $(dirname " + r[1] + ") && cp " + r[0] + " " + r[1];
+            std::string command = "mkdir -p $(dirname " + r[1] + ") && cp -r " + r[0] + " " + r[1];
             if (exists(r[0])) system(command.c_str());
           }
         }
